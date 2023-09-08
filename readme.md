@@ -42,6 +42,8 @@ BACKUP_LOG_PATH=/path/to/log
 
 ## Usage
 
+### Running the Script Manually
+
 1. Make sure the script has execute permissions:
 
 ```bash
@@ -54,6 +56,40 @@ chmod +x backup.sh
 ```
 
 If executed successfully, the script will backup all repositories of the user and their associated organizations to the chosen directory. The script logs any issues encountered during the process.
+
+### Scheduling the Script
+
+You can also schedule the script to run at regular intervals:
+
+- **Every X minutes:** 
+    ```bash
+    ./backup.sh --schedule Xmin 
+    ```
+- **Every X hours:** 
+    ```bash
+    ./backup.sh --schedule Xh
+    ```
+- **Every X days:** 
+    ```bash
+    ./backup.sh --schedule Xd
+    ```
+- **Every X weeks:** 
+    ```bash
+    ./backup.sh --schedule Xw
+    ```
+- **Every X months:** 
+    ```bash
+    ./backup.sh --schedule Xm
+    ```
+
+
+This ensures that only one scheduled instance of the script will run at any time. If you try to reschedule, it will overwrite the previous schedule.
+
+To stop any scheduled runs:
+
+```bash
+./backup.sh --stop
+```
 
 ## Interacting with Mirrored Repositories
 
@@ -73,7 +109,7 @@ git checkout main
 
 ### 2. **Browsing Commits and Logs:**
 
-You can inspect the logs of a mirrored repo without creating a working directory:
+You can inspect the logs of a mirrored repository without creating a working directory:
 
 ```bash
 git --git-dir=backup/github-backup-tool.git log
@@ -88,12 +124,12 @@ If you ever need to restore or push a mirrored backup to GitHub (or another remo
 
 ```bash
 cd backup/github-backup-tool.git
-git push --mirror https://github.com/your-username/github-backup-tool.git
+git push --mirror https://github.com/nebmit/github-backup-tool.git
 ```
 
 ## Notes
 
-**While you can technically make commits directly in the working directory created from the mirrored repo (as in point 1), it's not the primary use case for such backups. If you wish to continue development, consider pushing it to a remote (like GitHub) and then cloning that repository for a more standard Git workflow.**
+**While you can technically make commits directly in the working directory created from the mirrored repository (as in point 1), it's not the primary use case for such backups. If you wish to continue development, consider pushing it to a remote (like GitHub) and then cloning that repository for a more standard Git workflow.**
 
 The script interfaces with GitHub's API, which might have rate limits. Ensure your token has the right permissions, and be mindful of the number of API requests, particularly if you have many repositories.
 
